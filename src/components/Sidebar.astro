@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import profilePhoto from '../assets/profile.jpg';
 import { getAlternateUrl, useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -11,7 +13,6 @@ const t = useTranslations(lang);
 // Datos que no cambian según el idioma
 const profile = {
   name: 'Juan Pablo Zapata',
-  initials: 'JP',
   email: 'juanpazacno@gmail.com',
   phone: '+57 305 242 8530',
   github: 'https://github.com/zacno2711',
@@ -24,7 +25,21 @@ const otherHref = getAlternateUrl(Astro.url.pathname, otherLang);
 ---
 
 <aside class="sidebar">
-  <div class="avatar" aria-hidden="true">{profile.initials}</div>
+  <div class="avatar">
+    <!--
+      <Image> de astro:assets: en el build genera una versión optimizada (WebP)
+      al tamaño exacto. Se pide 224px porque se muestra a 112px (7rem):
+      el doble de resolución para pantallas de alta densidad (retina).
+    -->
+    <Image
+      src={profilePhoto}
+      alt={profile.name}
+      width={224}
+      height={224}
+      format="webp"
+      loading="eager"
+    />
+  </div>
 
   <h1 class="name">{profile.name}</h1>
   <p class="role">{t('sidebar.role')}</p>
@@ -110,15 +125,21 @@ const otherHref = getAlternateUrl(Astro.url.pathname, otherLang);
   .avatar {
     width: 7rem;
     height: 7rem;
+    flex-shrink: 0;
     border-radius: 50%;
-    display: grid;
-    place-items: center;
-    font-size: 2rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    color: var(--accent-contrast);
-    background: var(--accent);
+    overflow: hidden;
+    border: 2px solid var(--border);
+    background: var(--bg);
     margin-bottom: 1.25rem;
+  }
+
+  /* <Image> es un componente hijo: sus estilos se aplican con :global */
+  .avatar :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%; /* encuadra la cara un poco hacia arriba */
   }
 
   .name {

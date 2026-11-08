@@ -12,6 +12,7 @@ export const ui = {
   es: {
     'meta.title': 'Juan Pablo Zapata | Data & Automation Developer',
     'nav.label': 'Secciones',
+    'ui.backToTop': 'Volver arriba',
     'nav.about': 'Sobre mí',
     'nav.skills': 'Habilidades',
     'nav.portfolio': 'Portafolio',
@@ -49,6 +50,7 @@ export const ui = {
   en: {
     'meta.title': 'Juan Pablo Zapata | Data & Automation Developer',
     'nav.label': 'Sections',
+    'ui.backToTop': 'Back to top',
     'nav.about': 'About',
     'nav.skills': 'Skills',
     'nav.portfolio': 'Portfolio',

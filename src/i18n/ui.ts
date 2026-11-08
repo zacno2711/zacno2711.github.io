@@ -10,7 +10,7 @@ export const defaultLang: Lang = 'en';
 // Diccionario de textos. Cada clave debe existir en TODOS los idiomas.
 export const ui = {
   es: {
-    'meta.title': 'Juan Pablo Zapata | Data & Automation Developer',
+    'meta.title': 'Juan Pablo Zapata | Data Engineer',
     'nav.label': 'Secciones',
     'ui.backToTop': 'Volver arriba',
     'nav.about': 'Sobre mí',
@@ -60,7 +60,7 @@ export const ui = {
     'common.soon': 'Próximamente.',
   },
   en: {
-    'meta.title': 'Juan Pablo Zapata | Data & Automation Developer',
+    'meta.title': 'Juan Pablo Zapata | Data Engineer',
     'nav.label': 'Sections',
     'ui.backToTop': 'Back to top',
     'nav.about': 'About',

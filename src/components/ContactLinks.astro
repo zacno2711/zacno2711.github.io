@@ -1,0 +1,97 @@
+---
+import Icon, { type IconName } from './Icon.astro';
+import { profile } from '../data/profile';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const items: Array<{ icon: IconName; label: string; value: string; href: string; external?: boolean }> = [
+  { icon: 'mail', label: t('contact.label.email'), value: profile.email, href: `mailto:${profile.email}` },
+  { icon: 'phone', label: t('contact.label.phone'), value: profile.phone, href: `tel:${profile.phone.replace(/\s/g, '')}` },
+  { icon: 'github', label: 'GitHub', value: profile.githubHandle, href: profile.github, external: true },
+  { icon: 'linkedin', label: 'LinkedIn', value: profile.linkedinName, href: profile.linkedin, external: true },
+];
+---
+
+<ul class="links">
+  {
+    items.map((item) => (
+      <li>
+        <a
+          class="link"
+          href={item.href}
+          target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noopener noreferrer' : undefined}
+        >
+          <span class="icon">
+            <Icon name={item.icon} />
+          </span>
+          <span class="label">{item.label}</span>
+          <span class="value">{item.value}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .links {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+    gap: 0.75rem;
+  }
+
+  .link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 1rem 0.75rem;
+    text-align: center;
+    color: var(--text);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .link:hover {
+    text-decoration: none;
+    background: var(--surface);
+    border-color: var(--border);
+  }
+
+  .icon {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-bottom: 0.35rem;
+    color: var(--accent);
+  }
+
+  .icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .label {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+</style>

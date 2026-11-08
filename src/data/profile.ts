@@ -6,4 +6,7 @@ export const profile = {
   phone: '+57 305 242 8530',
   github: 'https://github.com/zacno2711',
   linkedin: 'https://linkedin.com/in/juanpazacno/',
+  // Cómo se muestran en la sección Contact
+  githubHandle: '@zacno2711',
+  linkedinName: 'Juan Pablo Zapata',
 };

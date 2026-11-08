@@ -5,7 +5,7 @@ import ProjectCard from '../../components/ProjectCard.astro';
 import Timeline from '../../components/Timeline.astro';
 import CvDownload from '../../components/CvDownload.astro';
 import ContactForm from '../../components/ContactForm.astro';
-import { profile } from '../../data/profile';
+import ContactLinks from '../../components/ContactLinks.astro';
 import { skillCategories } from '../../data/skills';
 import { getResume } from '../../data/resume';
 import { languages, useTranslations, type Lang } from '../../i18n/ui';
@@ -76,14 +76,9 @@ const resume = getResume(lang);
     <h2>{t('contact.title')}</h2>
     <p>{t('contact.intro')}</p>
 
-    <ContactForm lang={lang} />
+    <ContactLinks lang={lang} />
 
-    <h3 class="sub">{t('contact.direct')}</h3>
-    <ul class="direct">
-      <li><a href={`mailto:${profile.email}`}>{profile.email}</a></li>
-      <li><a href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-      <li><a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a></li>
-    </ul>
+    <ContactForm lang={lang} />
   </section>
 </Layout>
 
@@ -144,14 +139,6 @@ const resume = getResume(lang);
     margin-top: 2.5rem;
   }
 
-  .direct {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
-  }
 
   .projects {
     display: grid;

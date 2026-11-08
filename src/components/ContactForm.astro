@@ -29,6 +29,8 @@ const showForm = isWeb3formsConfigured || import.meta.env.DEV;
         Con JavaScript, el script de abajo lo intercepta y envía con fetch,
         para mostrar el resultado sin salir del sitio.
       -->
+      <h3 class="form-title">{t('contact.formTitle')}</h3>
+
       <form
         id="contact-form"
         class="form"
@@ -85,6 +87,15 @@ const showForm = isWeb3formsConfigured || import.meta.env.DEV;
     border-radius: var(--radius);
   }
 
+  .form-title {
+    margin: 2.25rem 0 1rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
   .form {
     display: grid;
     gap: 1rem;
@@ -133,7 +144,7 @@ const showForm = isWeb3formsConfigured || import.meta.env.DEV;
   }
 
   .btn {
-    justify-self: start;
+    justify-self: end;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;

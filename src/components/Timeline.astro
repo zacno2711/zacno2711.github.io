@@ -1,0 +1,98 @@
+---
+interface Item {
+  title: string;
+  org: string;
+  period: string;
+  bullets?: readonly string[];
+}
+
+interface Props {
+  items: readonly Item[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="timeline">
+  {
+    items.map((item) => (
+      <li class="item">
+        <div class="head">
+          <h4 class="title">{item.title}</h4>
+          <span class="period">{item.period}</span>
+        </div>
+        <p class="org">{item.org}</p>
+        {item.bullets && (
+          <ul class="bullets">
+            {item.bullets.map((bullet) => (
+              <li>{bullet}</li>
+            ))}
+          </ul>
+        )}
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 1.5rem;
+    border-left: 1px solid var(--border);
+    display: grid;
+    gap: 1.75rem;
+  }
+
+  .item {
+    position: relative;
+  }
+
+  /* El punto sobre la línea */
+  .item::before {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    left: calc(-1.5rem - 0.5px);
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translateX(-50%);
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+  }
+
+  .title {
+    font-size: 1.05rem;
+    margin: 0;
+  }
+
+  .period {
+    color: var(--muted);
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .org {
+    margin: 0.15rem 0 0.6rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .bullets {
+    margin: 0;
+    padding-left: 1.1rem;
+    font-size: 0.95rem;
+  }
+
+  .bullets li + li {
+    margin-top: 0.4rem;
+  }
+</style>

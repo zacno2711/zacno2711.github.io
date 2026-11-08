@@ -2,7 +2,10 @@
 import Layout from '../../layouts/Layout.astro';
 import SkillChips from '../../components/SkillChips.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+import Timeline from '../../components/Timeline.astro';
+import CvDownload from '../../components/CvDownload.astro';
 import { skillCategories } from '../../data/skills';
+import { getResume } from '../../data/resume';
 import { languages, useTranslations, type Lang } from '../../i18n/ui';
 
 // [lang] es un parámetro de ruta. En un sitio estático, Astro necesita saber
@@ -13,6 +16,7 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params as { lang: Lang };
 const t = useTranslations(lang);
+const resume = getResume(lang);
 ---
 
 <Layout lang={lang} title={t('meta.title')}>
@@ -49,7 +53,21 @@ const t = useTranslations(lang);
 
   <section id="resume">
     <h2>{t('resume.title')}</h2>
-    <p>{t('common.soon')}</p>
+
+    <h3 class="sub">{t('resume.experience')}</h3>
+    <Timeline items={resume.experience} />
+
+    <h3 class="sub">{t('resume.education')}</h3>
+    <Timeline items={resume.education} />
+
+    <h3 class="sub">{t('resume.certifications')}</h3>
+    <ul class="certs">
+      {resume.certifications.map((cert) => <li>{cert}</li>)}
+    </ul>
+
+    <div class="cv-cta">
+      <CvDownload lang={lang} variant="full" />
+    </div>
   </section>
 
   <section id="contact">
@@ -80,6 +98,39 @@ const t = useTranslations(lang);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
+  }
+
+  .sub {
+    margin: 2rem 0 1rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .sub:first-of-type {
+    margin-top: 1rem;
+  }
+
+  .certs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .certs li {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.95rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .cv-cta {
+    margin-top: 2.5rem;
   }
 
   .projects {

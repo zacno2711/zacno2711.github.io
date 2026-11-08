@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import CvDownload from './CvDownload.astro';
 import profilePhoto from '../assets/profile.jpg';
 import { getAlternateUrl, useTranslations, type Lang } from '../i18n/ui';
 
@@ -62,6 +63,10 @@ const otherHref = getAlternateUrl(Astro.url.pathname, otherLang);
   <div class="social">
     <a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a>
     <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+
+  <div class="cv-slot">
+    <CvDownload lang={lang} variant="compact" />
   </div>
 
   <div class="controls">
@@ -174,6 +179,11 @@ const otherHref = getAlternateUrl(Astro.url.pathname, otherLang);
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
+  }
+
+  .cv-slot {
+    width: 100%;
+    margin-top: 1.25rem;
   }
 
   .social {

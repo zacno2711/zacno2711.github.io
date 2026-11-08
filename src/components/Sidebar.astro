@@ -1,0 +1,306 @@
+---
+import { getAlternateUrl, useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Datos que no cambian según el idioma
+const profile = {
+  name: 'Juan Pablo Zapata',
+  initials: 'JP',
+  email: 'juanpazacno@gmail.com',
+  phone: '+57 305 242 8530',
+  github: 'https://github.com/zacno2711',
+  linkedin: 'https://linkedin.com/in/juanpazacno/',
+};
+
+// El switch de idioma es un enlace a la misma página en el otro idioma
+const otherLang: Lang = lang === 'es' ? 'en' : 'es';
+const otherHref = getAlternateUrl(Astro.url.pathname, otherLang);
+---
+
+<aside class="sidebar">
+  <div class="avatar" aria-hidden="true">{profile.initials}</div>
+
+  <h1 class="name">{profile.name}</h1>
+  <p class="role">{t('sidebar.role')}</p>
+
+  <ul class="contacts">
+    <li>
+      <span class="label">{t('sidebar.email')}</span>
+      <a href={`mailto:${profile.email}`}>{profile.email}</a>
+    </li>
+    <li>
+      <span class="label">{t('sidebar.phone')}</span>
+      <a href={`tel:${profile.phone.replace(/\s/g, '')}`}>{profile.phone}</a>
+    </li>
+    <li>
+      <span class="label">{t('sidebar.location')}</span>
+      <span>{t('sidebar.locationValue')}</span>
+    </li>
+  </ul>
+
+  <div class="social">
+    <a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+    <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+
+  <div class="controls">
+    <!-- Switch de idioma: enlace a la otra versión del sitio -->
+    <div class="control">
+      <span class="control-label">{t('sidebar.language')}</span>
+      <a
+        class="switch lang-switch"
+        class:list={{ 'is-en': lang === 'en' }}
+        href={otherHref}
+        hreflang={otherLang}
+        aria-label={t('sidebar.languageAria')}
+      >
+        <span class="opt" class:list={{ active: lang === 'es' }}>ES</span>
+        <span class="opt" class:list={{ active: lang === 'en' }}>EN</span>
+        <span class="thumb"></span>
+      </a>
+    </div>
+
+    <!-- Switch de tema: botón con role="switch" -->
+    <div class="control">
+      <span class="control-label">{t('sidebar.theme')}</span>
+      <button
+        id="theme-toggle"
+        class="switch theme-switch"
+        type="button"
+        role="switch"
+        aria-checked="false"
+        aria-label={t('sidebar.themeAria')}
+      >
+        <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <span class="thumb"></span>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    padding: 2.5rem 1.75rem 2rem;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow-y: auto;
+  }
+
+  .avatar {
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--accent-contrast);
+    background: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+
+  .name {
+    font-size: 1.3rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .role {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Contactos: siempre visibles */
+  .contacts {
+    list-style: none;
+    margin: 0 0 1.25rem;
+    padding: 1rem;
+    width: 100%;
+    display: grid;
+    gap: 0.85rem;
+    font-size: 0.875rem;
+    text-align: left;
+    word-break: break-word;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .social {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  /* ---------- Controles (switches) ---------- */
+  .controls {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    width: 100%;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .control-label {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* Base compartida por los dos switches */
+  .switch {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    width: 4.5rem;
+    height: 2rem;
+    padding: 0;
+    font: inherit;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .switch:hover {
+    border-color: var(--muted);
+    text-decoration: none;
+  }
+
+  /* La perilla (thumb) ocupa una mitad y se desliza a la otra */
+  .thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(50% - 2px);
+    height: calc(100% - 4px);
+    background: var(--accent);
+    border-radius: 999px;
+    transition: transform 0.2s ease;
+  }
+
+  /* Switch de idioma */
+  .opt {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--muted);
+    transition: color 0.2s ease;
+  }
+
+  .opt.active {
+    color: var(--accent-contrast);
+  }
+
+  .lang-switch.is-en .thumb {
+    transform: translateX(100%);
+  }
+
+  /* Switch de tema */
+  .icon {
+    position: relative;
+    z-index: 1;
+    width: 1rem;
+    height: 1rem;
+    justify-self: center;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    color: var(--muted);
+    transition: color 0.2s ease;
+  }
+
+  /* Claro: la perilla está sobre el sol. Oscuro: sobre la luna. */
+  .icon-sun {
+    color: var(--accent-contrast);
+  }
+
+  :global(:root[data-theme='dark']) .theme-switch .thumb {
+    transform: translateX(100%);
+  }
+
+  :global(:root[data-theme='dark']) .icon-sun {
+    color: var(--muted);
+  }
+
+  :global(:root[data-theme='dark']) .icon-moon {
+    color: var(--accent-contrast);
+  }
+
+  @media (max-width: 900px) {
+    .sidebar {
+      position: static;
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 1.75rem 1.25rem;
+    }
+
+    .controls {
+      margin-top: 1.5rem;
+      max-width: 20rem;
+    }
+  }
+</style>
+
+<!-- Este script SÍ lo procesa Astro: se empaqueta y se carga en el navegador -->
+<script>
+  const button = document.getElementById('theme-toggle');
+
+  // Mantiene aria-checked sincronizado con el tema actual (accesibilidad)
+  const sync = () => {
+    button?.setAttribute('aria-checked', String(document.documentElement.dataset.theme === 'dark'));
+  };
+
+  sync();
+
+  button?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {}
+    sync();
+  });
+</script>

@@ -1,0 +1,81 @@
+/* ============================================
+   Variables de diseño (design tokens)
+   Todo el sitio usa estas variables; para cambiar
+   un color basta editarlo aquí.
+   ============================================ */
+:root {
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Tema oscuro (por defecto) */
+  --bg: #0f1115;
+  --surface: #161a20;
+  --text: #e8eaed;
+  --muted: #9aa0a9;
+  --border: #262b33;
+  --accent: #60a5fa;
+  --accent-contrast: #0f1115;
+
+  --sidebar-width: 18rem;
+  --content-max: 46rem;
+  --radius: 0.75rem;
+
+  color-scheme: dark;
+}
+
+/* Tema claro: solo se aplica si el visitante lo elige con el switch */
+:root[data-theme="light"] {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --text: #1a1a1a;
+  --muted: #5f6672;
+  --border: #e4e6ea;
+  --accent: #2563eb;
+  --accent-contrast: #ffffff;
+
+  color-scheme: light;
+}
+
+/* ============================================
+   Base
+   ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--bg);
+}
+
+h1, h2, h3 {
+  line-height: 1.25;
+  margin: 0 0 0.5rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

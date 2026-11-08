@@ -1,0 +1,90 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SkillChips from '../../components/SkillChips.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { skillCategories } from '../../data/skills';
+import { languages, useTranslations, type Lang } from '../../i18n/ui';
+
+// [lang] es un parámetro de ruta. En un sitio estático, Astro necesita saber
+// de antemano qué valores puede tomar: aquí generamos una página por idioma.
+export function getStaticPaths() {
+  return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Lang };
+const t = useTranslations(lang);
+---
+
+<Layout lang={lang} title={t('meta.title')}>
+  <section id="about">
+    <h2>{t('about.title')}</h2>
+    <p>{t('about.text')}</p>
+  </section>
+
+  <section id="skills">
+    <h2>{t('skills.title')}</h2>
+    <div class="skill-groups">
+      {
+        skillCategories.map((category) => (
+          <div class="skill-group">
+            <h3 class="group-title">{category.label[lang]}</h3>
+            <SkillChips skills={category.skills} usedIn={`Skills > ${category.id}`} />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section id="portfolio">
+    <h2>{t('portfolio.title')}</h2>
+    <div class="projects">
+      <!-- Tarjeta de prueba: se reemplazará por los proyectos reales -->
+      <ProjectCard
+        title={t('portfolio.sample.title')}
+        description={t('portfolio.sample.description')}
+        skills={['Python', 'Apache Airflow', 'Docker', 'PostgreSQL']}
+      />
+    </div>
+  </section>
+
+  <section id="resume">
+    <h2>{t('resume.title')}</h2>
+    <p>{t('common.soon')}</p>
+  </section>
+
+  <section id="contact">
+    <h2>{t('contact.title')}</h2>
+    <p>{t('common.soon')}</p>
+  </section>
+</Layout>
+
+<style>
+  section {
+    padding: 2rem 0;
+    scroll-margin-top: 4rem;
+  }
+
+  section + section {
+    border-top: 1px solid var(--border);
+  }
+
+  .skill-groups {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .group-title {
+    margin-bottom: 0.6rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1.25rem;
+  }
+</style>

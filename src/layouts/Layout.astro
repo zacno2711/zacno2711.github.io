@@ -1,0 +1,116 @@
+---
+import '../styles/global.css';
+import Sidebar from '../components/Sidebar.astro';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  lang: Lang;
+}
+
+const { title, lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Mientras el sitio esté en pruebas, pedimos a Google que NO lo indexe.
+// Al lanzarlo oficialmente, cambia esto a false.
+const NOINDEX = true;
+---
+
+<!doctype html>
+<html lang={lang} data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    {NOINDEX && <meta name="robots" content="noindex, nofollow" />}
+
+    <!--
+      Se ejecuta ANTES de pintar la página para aplicar el tema guardado.
+      Por defecto es oscuro; solo es claro si el visitante lo eligió antes.
+      is:inline = Astro no lo procesa.
+    -->
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          document.documentElement.dataset.theme = saved === 'light' ? 'light' : 'dark';
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div class="shell">
+      <Sidebar lang={lang} />
+
+      <main class="main">
+        <nav class="topnav" aria-label={t('nav.label')}>
+          <a href="#about">{t('nav.about')}</a>
+          <a href="#skills">{t('nav.skills')}</a>
+          <a href="#portfolio">{t('nav.portfolio')}</a>
+          <a href="#resume">{t('nav.resume')}</a>
+          <a href="#contact">{t('nav.contact')}</a>
+        </nav>
+
+        <div class="content">
+          <slot />
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  .shell {
+    min-height: 100vh;
+  }
+
+  .main {
+    margin-left: var(--sidebar-width);
+  }
+
+  .topnav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem 2.5rem;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .topnav a {
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .topnav a:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .content {
+    max-width: var(--content-max);
+    padding: 2.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .main {
+      margin-left: 0;
+    }
+
+    .topnav {
+      padding: 0.75rem 1.25rem;
+      overflow-x: auto;
+      gap: 1.25rem;
+    }
+
+    .content {
+      padding: 1.5rem 1.25rem;
+    }
+  }
+</style>

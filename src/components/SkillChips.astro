@@ -1,0 +1,41 @@
+---
+import { assertSkills, type SkillId } from '../data/skills';
+
+interface Props {
+  skills: readonly SkillId[];
+  // Dónde se usa; solo sirve para que el mensaje de error sea claro
+  usedIn?: string;
+}
+
+const { skills, usedIn = 'SkillChips' } = Astro.props;
+
+// Falla el build si alguna skill no existe en src/data/skills.ts
+assertSkills(skills, usedIn);
+---
+
+<ul class="chips">
+  {skills.map((skill) => <li class="chip">{skill}</li>)}
+</ul>
+
+<style>
+  .chips {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .chip {
+    padding: 0.15rem 0.7rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--text);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+</style>

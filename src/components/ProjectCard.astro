@@ -1,0 +1,72 @@
+---
+import SkillChips from './SkillChips.astro';
+import type { SkillId } from '../data/skills';
+
+interface Props {
+  title: string;
+  description: string;
+  // Solo se aceptan skills definidas en src/data/skills.ts
+  skills: readonly SkillId[];
+  // Enlace al repositorio (opcional)
+  href?: string;
+}
+
+const { title, description, skills, href } = Astro.props;
+---
+
+<article class="card">
+  <h3 class="title">
+    {
+      href ? (
+        <a href={href} target="_blank" rel="noopener noreferrer">
+          {title}
+        </a>
+      ) : (
+        title
+      )
+    }
+  </h3>
+  <p class="description">{description}</p>
+
+  <div class="footer">
+    <SkillChips skills={skills} usedIn={`ProjectCard "${title}"`} />
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 1.4rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: border-color 0.2s ease;
+  }
+
+  .card:hover {
+    border-color: var(--muted);
+  }
+
+  .title {
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .title a {
+    color: var(--text);
+  }
+
+  .description {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.1rem;
+  }
+
+  /* Los chips quedan siempre abajo, aunque la descripción sea corta */
+  .footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+</style>

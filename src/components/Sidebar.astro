@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import CvDownload from './CvDownload.astro';
+import { profile } from '../data/profile';
 import profilePhoto from '../assets/profile.jpg';
 import { getAlternateUrl, useTranslations, type Lang } from '../i18n/ui';
 
@@ -10,15 +11,6 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-
-// Datos que no cambian según el idioma
-const profile = {
-  name: 'Juan Pablo Zapata',
-  email: 'juanpazacno@gmail.com',
-  phone: '+57 305 242 8530',
-  github: 'https://github.com/zacno2711',
-  linkedin: 'https://linkedin.com/in/juanpazacno/',
-};
 
 // El switch de idioma es un enlace a la misma página en el otro idioma
 const otherLang: Lang = lang === 'es' ? 'en' : 'es';
